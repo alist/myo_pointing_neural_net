@@ -43,3 +43,9 @@ model.add(Dense(num_classes, activation='softmax'))
 
 model.compile(optimizer=keras.optimizers.Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test))
+
+# TODO: How to make validation greatly penalize false positives and not care about false negatives?
+# TODO: What does LSTM units do? How does the temporal aspect get carried along?
+# TODO: Still, how do you quantify: A gesture happened in this window sometime?
+# TODO: Also, what should I record as a gesture in order to make it easier for training?
+
