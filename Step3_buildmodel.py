@@ -18,7 +18,7 @@ frame_size = 60
 batch_size = 32
 epochs = 15
 
-lstm_units = frame_size
+lstm_units = 20
 
 print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}, lstm_units {:d}"
       .format(frame_size, validation_split, batch_size, epochs, lstm_units))
@@ -73,8 +73,9 @@ model.add(LSTM(units=lstm_units,
                recurrent_activation='hard_sigmoid',
                stateful=False,
                batch_size=batch_size))
-model.add(Dense(units=32))
+model.add(Dense(units=16))
 model.add(Dense(num_classes, activation='softmax'))
+model.summary()
 
 model.compile(optimizer=keras.optimizers.Adam(), loss='categorical_crossentropy', metrics=['accuracy'])
 model.fit(x_train, y_train,
@@ -82,6 +83,8 @@ model.fit(x_train, y_train,
           epochs=epochs,
           class_weight=class_weights,
           validation_data=(x_test, y_test))
+
+model.save('last_model.h5')
 
 # TODO: How to make validation greatly penalize false positives and not care about false negatives?
 # TODO: What does LSTM units do? How does the temporal aspect get carried along?
