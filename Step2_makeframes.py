@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+np.set_printoptions(threshold='nan')
 
 df1 = pd.read_csv("./processed-data/df-0.csv")
 df2 = pd.read_csv("./processed-data/df-1.csv")
@@ -17,7 +18,7 @@ gesture_threshold = 0.5  # in percent
 
 framed_dfs = []
 
-write_out_each = False
+write_out_each = True
 write_out_concat = True
 pre_balance = True  # Decides whether to drop non-gesture frames till we have equal gesture and non-gesture frames
 
@@ -27,13 +28,16 @@ for i_df, df in enumerate(datas):
         frame_points = df.loc[range(i - size_of_frame, i)]
         gesture_count = sum(frame_points['gesture'])
         is_gesture = gesture_count >= size_of_frame * gesture_threshold
-        frame_points.drop(columns=['gesture'])
-        new_row = (frame_points, 1 if is_gesture else 0)
+        frame_points.drop(columns=['gesture', 'time'], inplace=True)
+        new_row = (frame_points.values, 1 if is_gesture else 0)
         frames.append(new_row)
+    if len(frames) < size_of_frame:
+        continue
     df_framed: pd.DataFrame = pd.DataFrame(data=frames)
     framed_dfs.append(df_framed)
     if write_out_each:
-        df_framed.to_csv(path_or_buf="./processed-data/df-framed-" + str(i_df) + ".csv")
+        df_values: np.ndarray = df_framed.values
+        np.save("./processed-data/df-framed-" + str(i_df) + ".npy", arr=df_values, allow_pickle=True)
 
 df_cat = pd.concat(framed_dfs)
 df_cat.reset_index(inplace=True, drop=True)
@@ -51,5 +55,6 @@ if pre_balance:
                 break
 
 if write_out_concat:
-    df_cat.to_csv(path_or_buf="./processed-data/df-framed-concat" + ("-balanced" if pre_balance else "") + ".csv")
-
+    np.save(file="./processed-data/df-framed-concat" + ("-balanced" if pre_balance else "") + ".npy",
+            arr=df_cat.values,
+            allow_pickle=True)
