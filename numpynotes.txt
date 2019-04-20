@@ -1,2 +1,6 @@
 stack
 reshape
+
+cross-cat entropy:
+neg log the percentage that should be in a group times the percentage that are classified in the group
+so, e.g, if both are 1 then that's good becaue log(1) is 0

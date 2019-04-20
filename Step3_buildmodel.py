@@ -26,7 +26,9 @@ print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}, lst
 # Data where col 0 is the data picture, and col 1 is the label
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
 LOAD_DFS = ["./processed-data/df-framed-0.npy", "./processed-data/df-framed-1.npy"]
-data_set = LOAD_CAT_BALANCED
+data_set = LOAD_DFS
+
+print("dataset: " + str(data_set))
 
 df: np.ndarray = None
 
@@ -41,7 +43,6 @@ data_column = 0
 gesture_classification_column = 1
 
 x_data = df[:, data_column]
-# x_data = np.expand_dims(x_data, axis=4)  # they want [[[1], [2], [3], ], ... [[3],[2],[1], ...]
 x_data = np.stack(x_data)
 df_g = df[:, gesture_classification_column]
 y_data = df_g
@@ -85,6 +86,10 @@ model.fit(x_train, y_train,
           validation_data=(x_test, y_test))
 
 model.save('last_model.h5')
+
+predictions = model.predict(x_data)
+
+print("done")
 
 # TODO: How to make validation greatly penalize false positives and not care about false negatives?
 # TODO: What does LSTM units do? How does the temporal aspect get carried along?
