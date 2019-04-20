@@ -31,8 +31,6 @@ for i_df, df in enumerate(datas):
         frame_points.drop(columns=['gesture', 'time'], inplace=True)
         new_row = (frame_points.values, 1 if is_gesture else 0)
         frames.append(new_row)
-    if len(frames) < size_of_frame:
-        continue
     df_framed: pd.DataFrame = pd.DataFrame(data=frames)
     framed_dfs.append(df_framed)
     if write_out_each:

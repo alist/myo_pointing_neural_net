@@ -5,31 +5,37 @@ from keras.layers import Input, Dense, Dropout, Flatten, Conv3D, MaxPool3D, LSTM
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Model, Sequential, load_model
 from sklearn.utils import class_weight
-# from sklearn.preprocessing import LabelEncoder  # if we had labels other than standard
+# from sklearn.preprocessing import LabelEncoder  # if we had labels other than integers
 
 import numpy as np
-import pandas as pd
 
 num_classes = 2
 balance_class_weights = True
-validation_split = 0.8  # This might grab mostly gestures
+validation_split = 0.25  # This time we're taking from front
 number_data_columns = 16
 frame_size = 60
 
-batch_size = 64
+batch_size = 32
 epochs = 15
+
+lstm_units = frame_size
+
+print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}, lstm_units {:d}"
+      .format(frame_size, validation_split, batch_size, epochs, lstm_units))
 
 # Data where col 0 is the data picture, and col 1 is the label
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
 LOAD_DFS = ["./processed-data/df-framed-0.npy", "./processed-data/df-framed-1.npy"]
+data_set = LOAD_CAT_BALANCED
 
-data_set = LOAD_DFS
 df: np.ndarray = None
 
 if data_set is LOAD_DFS:
     df = np.concatenate([np.load(file) for file in LOAD_DFS])
 else:
     df = np.load(LOAD_CAT_BALANCED)
+
+df = df[0: len(df) - len(df) % batch_size]  # trim off non-batchable
 
 data_column = 0
 gesture_classification_column = 1
@@ -49,13 +55,19 @@ y_data = keras.utils.to_categorical(df_g, num_classes)
 
 split_point = round(len(x_data) * validation_split)
 split_point = split_point - (split_point % batch_size)  # need train to be %=0 by batch_size
-x_test = x_data[split_point:]
-y_test = y_data[split_point:]
-x_train = x_data[:split_point]
-y_train = y_data[:split_point]
+x_test = x_data[:split_point]
+y_test = y_data[:split_point]
+x_train = x_data[split_point:]
+y_train = y_data[split_point:]
+
+print("ct of y_train = gesture is {:d}/{:d} and ct of y_test = gesture is {:d}/{:d}"
+      .format(sum([1 if cat[1] == 1 else 0 for cat in y_train]),
+              len(y_train),
+              sum([1 if cat[1] == 1 else 0 for cat in y_test]),
+              len(y_test)))
 
 model = Sequential()
-model.add(LSTM(units=16,
+model.add(LSTM(units=lstm_units,
                input_shape=(frame_size, number_data_columns),
                activation='relu',
                recurrent_activation='hard_sigmoid',
