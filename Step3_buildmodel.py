@@ -1,17 +1,28 @@
 import plaidml.keras
 plaidml.keras.install_backend()
 import keras
-from keras.layers import Input, Dense, Dropout, Flatten, Conv2D, MaxPool2D, LSTM
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Model, Sequential, load_model
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D, LSTM
+from keras.models import Sequential
 from sklearn.utils import class_weight
+import numpy as np
 # from sklearn.preprocessing import LabelEncoder  # if we had labels other than integers
 
-import numpy as np
+# /**
+#  NOTES: J AND K models don't really work. I works pretty well when you have myo on correctly and you clentch-point!
+#  1. I think there's too much non-gesture data over gesture data-->
+#  2.     There's not enough gesture data in the port-down configuration
+#  3.     There's not a lot of data in different rotations around wrist
+#  4. The framed data should be uniformly scaled at this point because the differences are too subtle. Accel ±10 g and
+#       quat by Pi, EMG ±255
+#  5. We need to make sure we're using class_weights correctly
+#  6. The validation data is concerning because we should just sample from all the data sets for 50 % gesture
+#           and 50% non
+#  TLDR: MORE POINTING DATA! BETTER SCALING! MORE EVEN VALIDATION SET!
+#  */
 
 num_classes = 2
 balance_class_weights = True
-validation_split = 0.05  # This time we're taking from front
+validation_split = 0.025  # This time we're taking from front
 number_data_columns = 15
 frame_size = 60
 
@@ -29,7 +40,9 @@ LOAD_DFS = ["./processed-data/df-framed-0.npy",
             "./processed-data/df-framed-1.npy",
             "./processed-data/df-framed-2.npy",
             "./processed-data/df-framed-3.npy",
-            "./processed-data/df-framed-4.npy"]
+            "./processed-data/df-framed-4.npy",
+            "./processed-data/df-framed-5.npy",
+            "./processed-data/df-framed-6.npy"]
 data_set = LOAD_DFS
 
 print("dataset: " + str(data_set))

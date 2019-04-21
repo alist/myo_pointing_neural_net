@@ -2,12 +2,14 @@ import numpy as np
 import pandas as pd
 np.set_printoptions(threshold='nan')
 
-df1 = pd.read_csv("./processed-data/df-0.csv")
-df2 = pd.read_csv("./processed-data/df-1.csv")
-df3 = pd.read_csv("./processed-data/df-2.csv")
-df4 = pd.read_csv("./processed-data/df-3.csv")
-df5 = pd.read_csv("./processed-data/df-4.csv")
-datas = [df1, df2, df3, df4, df5]
+df0 = pd.read_csv("./processed-data/df-0.csv")
+df1 = pd.read_csv("./processed-data/df-1.csv")
+df2 = pd.read_csv("./processed-data/df-2.csv")
+df3 = pd.read_csv("./processed-data/df-3.csv")
+df4 = pd.read_csv("./processed-data/df-4.csv")
+df5 = pd.read_csv("./processed-data/df-5.csv")
+df6 = pd.read_csv("./processed-data/df-6.csv")
+datas = [df0, df1, df2, df3, df4, df5, df6]
 
 #  Make a picture out of the last 60 (Nf) data-points.
 #  Steps:

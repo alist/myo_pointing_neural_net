@@ -5,7 +5,7 @@ from keras.models import Model, load_model
 import numpy as np
 
 models: [Model] = []
-model_names = ["./models/G_model.h5", "./models/H_model.h5", "./models/I_model.h5"]
+model_names = ["./models/I_model.h5", "./models/J_model.h5", "./models/K_model.h5"]
 
 for name in model_names:
     model = load_model(name)

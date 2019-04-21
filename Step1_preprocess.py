@@ -1,11 +1,13 @@
 import pandas as pd
 
-df1 = pd.read_csv("./data/alist_approx_20.txt")
-df2 = pd.read_csv("./data/alist_approx_50.txt")
-df3 = pd.read_csv("./data/80-sit-stand-usb-down.txt")
-df4 = pd.read_csv("./data/no-gesture-usb-towards-hand.txt")
-df5 = pd.read_csv("./data/no-points-usb-down.txt")
-datas = [df1, df2, df3, df4, df5]
+df0 = pd.read_csv("./data/alist_approx_20.txt")
+df1 = pd.read_csv("./data/alist_approx_50.txt")
+df2 = pd.read_csv("./data/80-sit-stand-usb-down.txt")
+df3 = pd.read_csv("./data/no-gesture-usb-towards-hand.txt")
+df4 = pd.read_csv("./data/no-points-usb-down.txt")
+df5 = pd.read_csv("./data/wrist-exercise-usb-down-0g.txt")
+df6 = pd.read_csv("./data/clap-dance-usb-down-0g.txt")
+datas = [df0, df1, df2, df3, df4, df5, df6]
 
 save_to_file = True  # only saves if True
 print_scale_factors = True
