@@ -11,12 +11,12 @@ import numpy as np
 
 num_classes = 2
 balance_class_weights = True
-validation_split = 0.25  # This time we're taking from front
-number_data_columns = 16
+validation_split = 0.05  # This time we're taking from front
+number_data_columns = 15
 frame_size = 60
 
 batch_size = 32
-epochs = 35
+epochs = 20
 
 lstm_units = 20
 
@@ -25,7 +25,11 @@ print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}"
 
 # Data where col 0 is the data picture, and col 1 is the label
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
-LOAD_DFS = ["./processed-data/df-framed-0.npy", "./processed-data/df-framed-1.npy"]
+LOAD_DFS = ["./processed-data/df-framed-0.npy",
+            "./processed-data/df-framed-1.npy",
+            "./processed-data/df-framed-2.npy",
+            "./processed-data/df-framed-3.npy",
+            "./processed-data/df-framed-4.npy"]
 data_set = LOAD_DFS
 
 print("dataset: " + str(data_set))
@@ -42,7 +46,7 @@ df = df[0: len(df) - len(df) % batch_size]  # trim off non-batchable
 data_column = 0
 gesture_classification_column = 1
 
-x_data = np.stack(df[:, data_column])
+x_data = np.stack(df[:, data_column])  # need to grab the data colum, and have NP recompute demensionality
 x_data = x_data.reshape(x_data.shape + tuple([1]))  # if using convo and maxpool vs lstm
 df_g = df[:, gesture_classification_column]
 y_data = df_g

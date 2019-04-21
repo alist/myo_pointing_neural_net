@@ -4,7 +4,10 @@ np.set_printoptions(threshold='nan')
 
 df1 = pd.read_csv("./processed-data/df-0.csv")
 df2 = pd.read_csv("./processed-data/df-1.csv")
-datas = [df1, df2]
+df3 = pd.read_csv("./processed-data/df-2.csv")
+df4 = pd.read_csv("./processed-data/df-3.csv")
+df5 = pd.read_csv("./processed-data/df-4.csv")
+datas = [df1, df2, df3, df4, df5]
 
 #  Make a picture out of the last 60 (Nf) data-points.
 #  Steps:
@@ -29,7 +32,8 @@ for i_df, df in enumerate(datas):
         gesture_count = sum(frame_points['gesture'])
         is_gesture = gesture_count >= size_of_frame * gesture_threshold
         frame_points.drop(columns=['gesture', 'time'], inplace=True)
-        new_row = (frame_points.values, 1 if is_gesture else 0)
+        frame_no_index = frame_points.values[:, 1:]  # drops the ever-incrementing index
+        new_row = (frame_no_index, 1 if is_gesture else 0)
         frames.append(new_row)
     df_framed: pd.DataFrame = pd.DataFrame(data=frames)
     framed_dfs.append(df_framed)

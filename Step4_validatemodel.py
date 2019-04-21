@@ -5,7 +5,7 @@ from keras.models import Model, load_model
 import numpy as np
 
 models: [Model] = []
-model_names = ["./models/D_convo_model.h5", "./models/E_best_model.h5"]
+model_names = ["./models/G_model.h5", "./models/H_model.h5", "./models/I_model.h5"]
 
 for name in model_names:
     model = load_model(name)
@@ -18,7 +18,7 @@ num_classes = 2
 data_column = 0
 gesture_classification_column = 1
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
-LOAD_DFS = ["./processed-data/df-framed-0.npy", "./processed-data/df-framed-1.npy"]
+LOAD_DFS = ["./processed-data/df-framed-2.npy"]
 data_set = LOAD_DFS
 
 print("dataset: " + str(data_set))

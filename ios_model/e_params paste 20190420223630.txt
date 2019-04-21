@@ -1,8 +1,0 @@
-/Users/alist/Documents/MIT/Classes/Spring19/6835/MMCheckComp/venv/bin/python "/Applications/PyCharm CE.app/Contents/helpers/pydev/pydevd.py" --multiproc --qt-support=auto --client 127.0.0.1 --port 64808 --file /Users/alist/Documents/MIT/Classes/Spring19/6835/MMCheckComp/Step1_preprocess.py
-pydev debugger: process 22105 is connecting
-
-Connected to pydev debugger (build 182.4505.26)
-a -1.600098:4.738281, q -0.637207:3.775391, e -128.000000:255.000000
-a -3.364746:5.992187, q -2.579102:5.206543, e -128.000000:255.000000
-
-Process finished with exit code 0
