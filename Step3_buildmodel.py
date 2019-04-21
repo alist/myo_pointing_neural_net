@@ -77,14 +77,6 @@ model.add(MaxPool2D((2, 2)))
 model.add(Conv2D(4, (2, 2), activation='relu',
                  padding='same',
                  input_shape=input_shape))
-# model.add(MaxPool2D((2, 2)))
-
-# model.add(LSTM(units=lstm_units,
-#                activation='relu',
-#                recurrent_activation='hard_sigmoid',
-#                stateful=False,
-#                batch_size=batch_size))
-# model.add(Dense(units=16))
 model.add(Flatten())
 model.add(Dense(num_classes, activation='softmax'))
 model.summary()

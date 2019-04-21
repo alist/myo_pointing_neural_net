@@ -1,5 +1,5 @@
-import plaidml.keras
-plaidml.keras.install_backend()
+# import plaidml.keras
+# plaidml.keras.install_backend()
 import keras
 from keras.models import Model, load_model
 import numpy as np
