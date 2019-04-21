@@ -5,7 +5,7 @@ from keras.models import Model, load_model
 import numpy as np
 
 models: [Model] = []
-model_names = ["./models/A_best_model.h5", "./models/B_good_model.h5", "./models/C_last_model.h5"]
+model_names = ["./models/D_convo_model.h5"]
 
 for name in model_names:
     model = load_model(name)
@@ -32,6 +32,7 @@ else:
 df = df[0: len(df) - len(df) % batch_size]  # trim off non-batchable
 
 x_data = np.stack(df[:, data_column])
+x_data = x_data.reshape(x_data.shape + tuple([1]))
 y_data = df[:, gesture_classification_column]
 
 predictions = []

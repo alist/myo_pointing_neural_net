@@ -1,7 +1,7 @@
 import plaidml.keras
 plaidml.keras.install_backend()
 import keras
-from keras.layers import Input, Dense, Dropout, Flatten, Conv3D, MaxPool3D, LSTM, LSTMCell
+from keras.layers import Input, Dense, Dropout, Flatten, Conv2D, MaxPool2D, LSTM
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Model, Sequential, load_model
 from sklearn.utils import class_weight
@@ -42,8 +42,8 @@ df = df[0: len(df) - len(df) % batch_size]  # trim off non-batchable
 data_column = 0
 gesture_classification_column = 1
 
-x_data = df[:, data_column]
-x_data = np.stack(x_data)
+x_data = np.stack(df[:, data_column])
+x_data = x_data.reshape(x_data.shape + tuple([1]))  # if using convo and maxpool vs lstm
 df_g = df[:, gesture_classification_column]
 y_data = df_g
 
@@ -67,14 +67,24 @@ print("ct of y_train = gesture is {:d}/{:d} and ct of y_test = gesture is {:d}/{
               sum([1 if cat[1] == 1 else 0 for cat in y_test]),
               len(y_test)))
 
+
+input_shape = (frame_size, number_data_columns, 1)
 model = Sequential()
-model.add(LSTM(units=lstm_units,
-               input_shape=(frame_size, number_data_columns),
-               activation='relu',
-               recurrent_activation='hard_sigmoid',
-               stateful=False,
-               batch_size=batch_size))
-model.add(Dense(units=16))
+model.add(Conv2D(2, (2, 2), activation='relu',
+                 padding='same',
+                 input_shape=input_shape))
+model.add(MaxPool2D((2,2)))
+model.add(Conv2D(2, (2, 2), activation='relu',
+                 padding='same',
+                 input_shape=input_shape))
+model.add(MaxPool2D((2,2)))
+# model.add(LSTM(units=lstm_units,
+#                activation='relu',
+#                recurrent_activation='hard_sigmoid',
+#                stateful=False,
+#                batch_size=batch_size))
+# model.add(Dense(units=16))
+model.add(Flatten())
 model.add(Dense(num_classes, activation='softmax'))
 model.summary()
 
