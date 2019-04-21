@@ -5,7 +5,7 @@ from keras.models import Model, load_model
 import numpy as np
 
 models: [Model] = []
-model_names = ["./models/D_convo_model.h5"]
+model_names = ["./models/D_convo_model.h5", "./models/E_best_model.h5"]
 
 for name in model_names:
     model = load_model(name)
@@ -40,7 +40,7 @@ for model in models:
     prediction = model.predict(x_data, batch_size=batch_size)
     predictions.append(prediction)
 
-predictions = np.array(predictions)[:, 0:2000, :]
+predictions = np.array(predictions)[:, 0:5000, :]
 
 for i in range(predictions.shape[1]):
     prediction = predictions[:, i, :]

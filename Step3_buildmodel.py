@@ -16,12 +16,12 @@ number_data_columns = 16
 frame_size = 60
 
 batch_size = 32
-epochs = 15
+epochs = 35
 
 lstm_units = 20
 
-print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}, lstm_units {:d}"
-      .format(frame_size, validation_split, batch_size, epochs, lstm_units))
+print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}"
+      .format(frame_size, validation_split, batch_size, epochs))
 
 # Data where col 0 is the data picture, and col 1 is the label
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
@@ -73,11 +73,12 @@ model = Sequential()
 model.add(Conv2D(2, (2, 2), activation='relu',
                  padding='same',
                  input_shape=input_shape))
-model.add(MaxPool2D((2,2)))
-model.add(Conv2D(2, (2, 2), activation='relu',
+model.add(MaxPool2D((2, 2)))
+model.add(Conv2D(4, (2, 2), activation='relu',
                  padding='same',
                  input_shape=input_shape))
-model.add(MaxPool2D((2,2)))
+# model.add(MaxPool2D((2, 2)))
+
 # model.add(LSTM(units=lstm_units,
 #                activation='relu',
 #                recurrent_activation='hard_sigmoid',
@@ -96,10 +97,6 @@ model.fit(x_train, y_train,
           validation_data=(x_test, y_test))
 
 model.save('last_model.h5')
-
-predictions = model.predict(x_data)
-
-print("done")
 
 # TODO: How to make validation greatly penalize false positives and not care about false negatives?
 # TODO: What does LSTM units do? How does the temporal aspect get carried along?
