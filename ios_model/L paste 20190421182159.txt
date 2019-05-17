@@ -1,0 +1,22 @@
+/Users/alist/Documents/MIT/Classes/Spring19/6835/MMCheckComp/venv/bin/python "/Applications/PyCharm CE.app/Contents/helpers/pydev/pydevd.py" --multiproc --qt-support=auto --client 127.0.0.1 --port 52284 --file /Users/alist/Documents/MIT/Classes/Spring19/6835/MMCheckComp/Step1_preprocess.py
+pydev debugger: process 43794 is connecting
+
+Connected to pydev debugger (build 182.4505.26)
+Using universal scale-- the following for reference: 
+df0: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df1: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df2: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df3: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df4: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df5: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df6: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+Using universal scale-- the following for reference: 
+df7: a -10.000000:10.000000, q -3.141593:9.424778, e -128.000000:255.000000
+
+Process finished with exit code 0

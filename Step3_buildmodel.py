@@ -12,17 +12,18 @@ import numpy as np
 #  1. I think there's too much non-gesture data over gesture data-->
 #  2.     There's not enough gesture data in the port-down configuration
 #  3.     There's not a lot of data in different rotations around wrist
-#  4. The framed data should be uniformly scaled at this point because the differences are too subtle. Accel ±10 g and
-#       quat by Pi, EMG ±255
+#  4. The framed data (should be) are uniformly scaled at this point because the differences are too subtle.
+#       Accel ±10 g and Quat by Pi, EMG ±255
 #  5. We need to make sure we're using class_weights correctly
 #  6. The validation data is concerning because we should just sample from all the data sets for 50 % gesture
-#           and 50% non
+#           and 50% non (# you can use random_state for reproducibility df.sample(n=0.5 * len(df), random_state=2))
 #  TLDR: MORE POINTING DATA! BETTER SCALING! MORE EVEN VALIDATION SET!
 #  */
 
 num_classes = 2
 balance_class_weights = True
-validation_split = 0.025  # This time we're taking from front
+validation_split = 0.90
+take_validation_from_front = False
 number_data_columns = 15
 frame_size = 60
 
@@ -31,8 +32,8 @@ epochs = 20
 
 lstm_units = 20
 
-print("frame_size {:d}, validation_split {:f}, batch_size {:d}, epochs {:d}"
-      .format(frame_size, validation_split, batch_size, epochs))
+print("frame_size {:d}, validation_split {:f}, from_front {:b}, batch_size {:d}, epochs {:d}"
+      .format(frame_size, validation_split, take_validation_from_front, batch_size, epochs))
 
 # Data where col 0 is the data picture, and col 1 is the label
 LOAD_CAT_BALANCED = "./processed-data/df-framed-concat-balanced.npy"
@@ -42,7 +43,8 @@ LOAD_DFS = ["./processed-data/df-framed-0.npy",
             "./processed-data/df-framed-3.npy",
             "./processed-data/df-framed-4.npy",
             "./processed-data/df-framed-5.npy",
-            "./processed-data/df-framed-6.npy"]
+            "./processed-data/df-framed-6.npy",
+            "./processed-data/df-framed-7.npy"]
 data_set = LOAD_DFS
 
 print("dataset: " + str(data_set))
@@ -77,6 +79,12 @@ x_test = x_data[:split_point]
 y_test = y_data[:split_point]
 x_train = x_data[split_point:]
 y_train = y_data[split_point:]
+
+if take_validation_from_front is False:
+    x_test = x_data[split_point:]
+    y_test = y_data[split_point:]
+    x_train = x_data[:split_point]
+    y_train = y_data[:split_point]
 
 print("ct of y_train = gesture is {:d}/{:d} and ct of y_test = gesture is {:d}/{:d}"
       .format(sum([1 if cat[1] == 1 else 0 for cat in y_train]),

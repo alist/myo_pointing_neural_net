@@ -9,7 +9,10 @@ df3 = pd.read_csv("./processed-data/df-3.csv")
 df4 = pd.read_csv("./processed-data/df-4.csv")
 df5 = pd.read_csv("./processed-data/df-5.csv")
 df6 = pd.read_csv("./processed-data/df-6.csv")
-datas = [df0, df1, df2, df3, df4, df5, df6]
+df7 = pd.read_csv("./processed-data/df-7.csv")
+datas = [df0, df1, df2, df3, df4, df5, df6, df7]
+
+skip_first_ct_dfs = 0  # if > 0, skips processing that number of datasets. Non-zero stops write-out-concat
 
 #  Make a picture out of the last 60 (Nf) data-points.
 #  Steps:
@@ -24,10 +27,11 @@ gesture_threshold = 0.5  # in percent
 framed_dfs = []
 
 write_out_each = True
-write_out_concat = True
+write_out_concat = True and skip_first_ct_dfs == 0
 pre_balance = True  # Decides whether to drop non-gesture frames till we have equal gesture and non-gesture frames
 
 for i_df, df in enumerate(datas):
+    if i_df < skip_first_ct_dfs: continue
     frames = []
     for i in range(size_of_frame, len(df)):
         frame_points = df.loc[range(i - size_of_frame, i)]
